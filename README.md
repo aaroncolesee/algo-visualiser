@@ -1,3 +1,8 @@
+This is a sorting algorithm visualiser made using ReactJS. You can check it out here: https://aaroncolesee.github.io/algo-visualiser/
+
+Completed after watching Clement Mihailescu's Sorting Visualizer tutorial: https://www.youtube.com/watch?v=pFXYym4Wbkc
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
