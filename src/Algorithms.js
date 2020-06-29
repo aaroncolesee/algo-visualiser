@@ -146,3 +146,32 @@ function partition(array, lowIdx, highIdx, animations) {
 
     return j;
 }
+
+export function getInsetionSortAnimations(array) {
+    if (array.length <= 1) return array;
+    
+    const animations = [];
+    insertionSort(array, animations);
+    return animations;
+}
+
+function insertionSort(array, animations) {
+    for (let i=1; i<array.length; i++) {
+        animations.push([i, i]);
+        animations.push([i, i]);
+        animations.push([i, array[i]]);
+        let j = i;
+        while (j > 0 && array[j-1] > array[j]) {
+            animations.push([j-1, j-1]);
+            animations.push([j-1, j-1]);
+            animations.push([j-1, array[j]]);
+            animations.push([j, j]);
+            animations.push([j, j]);
+            animations.push([j, array[j-1]]);
+            const temp = array[j];
+            array[j] = array[j-1];
+            array[j-1] = temp;
+            j--;
+        }
+    }
+}
