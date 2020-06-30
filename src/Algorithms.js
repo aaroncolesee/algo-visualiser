@@ -175,3 +175,34 @@ function insertionSort(array, animations) {
         }
     }
 }
+
+export function getCountingSortAnimations(array, maxNum) {
+    const animations = [];
+    countingSort(array, maxNum, animations);
+    return animations;
+}
+
+function countingSort(array, maxNum, animations) {
+    let arr = []
+
+    for (let i=0; i<=maxNum; i++) {
+        arr[i] = 0;
+    }
+    for (let i=0; i<array.length; i++) {
+        animations.push([i, i]);
+        animations.push([i, i]);
+        animations.push([i, array[i]]);
+        arr[array[i]]++;
+    }
+    let j = 0;
+    for (let i=0; i<=arr.length; i++) {
+        while (arr[i] > 0) {
+            animations.push([j, j]);
+            animations.push([j, j]);
+            animations.push([j, i]);
+            array[j] = i;
+            j++;
+            arr[i]--;
+        }
+    }
+}
