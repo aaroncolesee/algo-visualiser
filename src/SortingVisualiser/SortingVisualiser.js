@@ -124,7 +124,7 @@ class SortingVisualiser extends React.Component {
     countingSort() {
         this.disableButtons();
     
-        const animations = algorithms.getCountingSortAnimations(this.state.array, 850);
+        const animations = algorithms.getCountingSortAnimations(this.state.array, this.state.maxNum);
         for (let i=0; i<animations.length; i++) {
             const bars = document.getElementsByClassName('bar');
             const isColorChange = i%3 !== 2;
