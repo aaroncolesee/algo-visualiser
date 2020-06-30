@@ -11,7 +11,8 @@ class SortingVisualiser extends React.Component {
 
         this.state = {
             array : [],
-            numBars: 50
+            numBars: 50,
+            maxNum: 1000
         };
     }
 
@@ -22,7 +23,7 @@ class SortingVisualiser extends React.Component {
     resetArray() {
         const array = [];
         for (let i = 0; i < this.state.numBars; i++) {
-            array.push(randomIntFromInterval(5, 850));
+            array.push(randomIntFromInterval(5, this.state.maxNum));
         }
         this.setState({array});
     }
@@ -153,6 +154,7 @@ class SortingVisualiser extends React.Component {
 
     disableButtons() {
         document.getElementById('slider').disabled = true;
+        document.getElementById('max-num').disabled = true;
         document.getElementById('randomize-button').disabled = true;
         document.getElementById('mergesort-button').disabled = true;
         document.getElementById('quicksort-button').disabled = true;
@@ -162,6 +164,7 @@ class SortingVisualiser extends React.Component {
     
     enableButtons() {
         document.getElementById('slider').disabled = false;
+        document.getElementById('max-num').disabled = false;
         document.getElementById('randomize-button').disabled = false;
         document.getElementById('mergesort-button').disabled = false;
         document.getElementById('quicksort-button').disabled = false;
@@ -170,7 +173,12 @@ class SortingVisualiser extends React.Component {
     }
 
     onSliderChange = (event) => {
-        this.setState({numBars: event.target.value})
+        this.setState({numBars: event.target.value});
+        this.resetArray();
+    }
+
+    onMaxNumberChange = (event) => {
+        this.setState({maxNum: event.target.value});
         this.resetArray();
     }
 
@@ -188,6 +196,8 @@ class SortingVisualiser extends React.Component {
                 <button id='quicksort-button' onClick={() => this.quicksort()}>Quick Sort</button>
                 <button id='insertionsort-button' onClick={() => this.insertionSort()}>Insertion Sort</button>
                 <button id='countingsort-button' onClick={() => this.countingSort()}>Counting Sort</button>
+                 Max Number 
+                <input type='number' min='10' max={Number.MAX_VALUE} value={this.state.maxNum} id='max-num' onChange={this.onMaxNumberChange}></input>
                 <input type='range' min='10' max='250' value={this.state.numBars} id='slider' className='slider' onChange={this.onSliderChange}></input>
                 <div className='value'>{this.state.numBars}</div>
             </div>
