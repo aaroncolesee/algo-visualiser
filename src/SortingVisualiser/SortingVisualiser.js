@@ -157,7 +157,7 @@ class SortingVisualiser extends React.Component {
         document.getElementById('mergesort-button').disabled = true;
         document.getElementById('quicksort-button').disabled = true;
         document.getElementById('insertionsort-button').disabled = true;
-        document.getElementById('countingosrt-button').disabled = true;
+        document.getElementById('countingsort-button').disabled = true;
     }
     
     enableButtons() {
@@ -188,7 +188,7 @@ class SortingVisualiser extends React.Component {
                 <button id='quicksort-button' onClick={() => this.quicksort()}>Quick Sort</button>
                 <button id='insertionsort-button' onClick={() => this.insertionSort()}>Insertion Sort</button>
                 <button id='countingsort-button' onClick={() => this.countingSort()}>Counting Sort</button>
-                <input type='range' min='10' max='250' value={this.state.numBars} className='slider' onChange={this.onSliderChange}></input>
+                <input type='range' min='10' max='250' value={this.state.numBars} id='slider' className='slider' onChange={this.onSliderChange}></input>
                 <div className='value'>{this.state.numBars}</div>
             </div>
         );
