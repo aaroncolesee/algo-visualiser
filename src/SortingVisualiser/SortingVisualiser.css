@@ -1,5 +1,17 @@
 .toolbar {
+    background-color: lightcoral;
+    font-size: 24px;
+}
 
+button {
+    background: none;
+    border: none;
+    padding: 0 5px;
+    font: inherit;
+}
+
+.slider-container {
+    font-size: 14px;
 }
 
 .slider {

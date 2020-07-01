@@ -1,33 +1,3 @@
-/*
-export const mergesort = array => {
-    if (array.length <= 1) return array;
-
-    const mid = Math.floor(array.length/2);
-    const L = array.slice(0, mid);
-    const R = array.slice(mid);
-
-    return merge(mergesort(L), mergesort(R));
-};
-
-export const merge = (left, right) => {
-    const result = [];
-    let lidx = 0;
-    let ridx = 0;
-
-    while(lidx < left.length && ridx < right.length) {
-        if(left[lidx] <= right[ridx]) {
-            result.push(left[lidx]);
-            lidx++;
-        }
-        else {
-            result.push(right[ridx]);
-            ridx++;
-        }
-    }
-
-    return result.concat(left.slice(lidx)).concat(right.slice(ridx));
-}
-*/
 export function getMergesortAnimations(array) {
     if (array.length <= 1) return array;
 
@@ -147,6 +117,36 @@ function partition(array, lowIdx, highIdx, animations) {
     return j;
 }
 
+export function getBubbleSortAnimations(array) {
+    const animations = [];
+    bubbleSort(array, animations);
+    return animations;
+}
+
+function bubbleSort(array, animations) {
+    let limitIdx = array.length-1;
+    for (let i=0; i<array.length; i++) {
+        for (let j=0; j<limitIdx; j++) {
+            animations.push([j, j]);
+            animations.push([j, j]);
+            animations.push([j, array[j]]);
+            if (array[j] > array[j+1]) {
+                animations.push([j, j+1]);
+                animations.push([j, j+1]);
+                animations.push([j, array[j+1]]);
+                animations.push([j+1, j]);
+                animations.push([j+1, j]);
+                animations.push([j+1, array[j]]);
+                const temp = array[j];
+                array[j] = array[j+1];
+                array[j+1] = temp;
+            }
+        }
+        limitIdx--;
+    }
+    console.log(array);
+}
+
 export function getInsetionSortAnimations(array) {
     if (array.length <= 1) return array;
     
@@ -157,16 +157,13 @@ export function getInsetionSortAnimations(array) {
 
 function insertionSort(array, animations) {
     for (let i=1; i<array.length; i++) {
-        animations.push([i, i]);
-        animations.push([i, i]);
-        animations.push([i, array[i]]);
         let j = i;
         while (j > 0 && array[j-1] > array[j]) {
-            animations.push([j-1, j-1]);
-            animations.push([j-1, j-1]);
+            animations.push([j-1, j]);
+            animations.push([j-1, j]);
             animations.push([j-1, array[j]]);
-            animations.push([j, j]);
-            animations.push([j, j]);
+            animations.push([j, j-1]);
+            animations.push([j, j-1]);
             animations.push([j, array[j-1]]);
             const temp = array[j];
             array[j] = array[j-1];
