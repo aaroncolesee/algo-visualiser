@@ -1,7 +1,5 @@
-.container {
-    position: absolute;
-    margin-top: 50px;
-    margin-left: 50px;
+.toolbar {
+
 }
 
 .slider {
@@ -37,8 +35,15 @@
     background: #4CAF50; /* Green background */
     cursor: pointer; /* Cursor on hover */
 }
-  
+
+.container {
+    position: middle;
+    margin-left: 50px;
+    vertical-align: bottom;
+}
+
 .bar {
     display: inline-block;
     margin: 0 1px;
+    vertical-align: bottom;
 }

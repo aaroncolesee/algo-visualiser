@@ -49,7 +49,7 @@ class SortingVisualiser extends React.Component {
                 setTimeout(() => {
                     const [barOneIdx, newHeight] = animations[i];
                     const barOneStyle = bars[barOneIdx].style;
-                    barOneStyle.height = `${newHeight}px`;
+                    barOneStyle.height = `${newHeight*850/this.state.maxNum}px`;
                 }, i * ANIMATION_SPEED_MS);
             }
         }
@@ -80,7 +80,7 @@ class SortingVisualiser extends React.Component {
                 setTimeout(() => {
                     const [barOneIdx, newHeight] = animations[i];
                     const barOneStyle = bars[barOneIdx].style;
-                    barOneStyle.height = `${newHeight}px`;
+                    barOneStyle.height = `${newHeight*850/this.state.maxNum}px`;
                 }, i * ANIMATION_SPEED_MS);
             }
         }
@@ -111,7 +111,7 @@ class SortingVisualiser extends React.Component {
                 setTimeout(() => {
                     const [barOneIdx, newHeight] = animations[i];
                     const barOneStyle = bars[barOneIdx].style;
-                    barOneStyle.height = `${newHeight}px`;
+                    barOneStyle.height = `${newHeight*850/this.state.maxNum}px`;
                 }, i * ANIMATION_SPEED_MS);
             }
         }
@@ -142,7 +142,7 @@ class SortingVisualiser extends React.Component {
                 setTimeout(() => {
                     const [barOneIdx, newHeight] = animations[i];
                     const barOneStyle = bars[barOneIdx].style;
-                    barOneStyle.height = `${newHeight}px`;
+                    barOneStyle.height = `${newHeight*850/this.state.maxNum}px`;
                 }, i * ANIMATION_SPEED_MS);
             }
         }
@@ -186,20 +186,22 @@ class SortingVisualiser extends React.Component {
         const { array } = this.state;
         return (
             <div>
+                <div className='toolbar'>
+                    <button id='randomize-button' onClick={() => this.resetArray()}>Randomize</button>
+                    <button id='mergesort-button' onClick={() => this.mergesort()}>Merge Sort</button>
+                    <button id='quicksort-button' onClick={() => this.quicksort()}>Quick Sort</button>
+                    <button id='insertionsort-button' onClick={() => this.insertionSort()}>Insertion Sort</button>
+                    <button id='countingsort-button' onClick={() => this.countingSort()}>Counting Sort</button>
+                    Max Number 
+                    <input type='number' min='10' max={Number.MAX_VALUE} value={this.state.maxNum} id='max-num' onChange={this.onMaxNumberChange}></input>
+                    <input type='range' min='10' max='250' value={this.state.numBars} id='slider' className='slider' onChange={this.onSliderChange}></input>
+                    <div className='value'>{this.state.numBars}</div>
+                </div>
                 <div className='container'>
                     {array.map((value, idx) => (
-                        <div className='bar' key={idx} style={{backgroundColor: PRIMARY_COLOR, height: `${value}px`, width: `${1200/this.state.numBars}px`}}></div>
+                        <div className='bar' key={idx} style={{backgroundColor: PRIMARY_COLOR, height: `${850*value/this.state.maxNum}px`, width: `${1200/this.state.numBars}px`}}></div>
                     ))}
                 </div>
-                <button id='randomize-button' onClick={() => this.resetArray()}>Randomize</button>
-                <button id='mergesort-button' onClick={() => this.mergesort()}>Merge Sort</button>
-                <button id='quicksort-button' onClick={() => this.quicksort()}>Quick Sort</button>
-                <button id='insertionsort-button' onClick={() => this.insertionSort()}>Insertion Sort</button>
-                <button id='countingsort-button' onClick={() => this.countingSort()}>Counting Sort</button>
-                 Max Number 
-                <input type='number' min='10' max={Number.MAX_VALUE} value={this.state.maxNum} id='max-num' onChange={this.onMaxNumberChange}></input>
-                <input type='range' min='10' max='250' value={this.state.numBars} id='slider' className='slider' onChange={this.onSliderChange}></input>
-                <div className='value'>{this.state.numBars}</div>
             </div>
         );
     }
