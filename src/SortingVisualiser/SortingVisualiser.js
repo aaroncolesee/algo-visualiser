@@ -10,14 +10,28 @@ class SortingVisualiser extends React.Component {
         super(props);
 
         this.state = {
+            width: window.innerWidth,
+            height: window.innerHeight,
             array : [],
             numBars: 50,
             maxNum: 100000000
         };
+
+        this.updateWindowSize = this.updateWindowSize.bind(this);
+    }
+
+    updateWindowSize() {
+        this.setState({width: window.innerWidth, height: window.innerHeight});
+        
     }
 
     componentDidMount() {
         this.resetArray();
+        window.addEventListener('resize', this.updateWindowSize);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowSize);
     }
 
     resetArray() {
@@ -213,19 +227,22 @@ class SortingVisualiser extends React.Component {
         return (
             <div>
                 <div className='toolbar'>
-                    <button id='randomize-button' onClick={() => this.resetArray()}>Randomize</button>| 
-                    <button id='mergesort-button' onClick={() => this.mergesort()}>Merge Sort</button>
-                    <button id='quicksort-button' onClick={() => this.quicksort()}>Quick Sort</button>
-                    <button id='bubblesort-button' onClick={() => this.bubbleSort()}>Bubble Sort</button>
-                    <button id='insertionsort-button' onClick={() => this.insertionSort()}>Insertion Sort</button>
-                    <button id='countingsort-button' onClick={() => this.countingSort()}>Counting Sort</button>
+                    <div classNamee='button-container'>
+                        <button id='randomize-button' onClick={() => this.resetArray()}>Randomize</button>
+                        <button id='mergesort-button' onClick={() => this.mergesort()}>Merge Sort</button>
+                        <button id='quicksort-button' onClick={() => this.quicksort()}>Quick Sort</button>
+                        <button id='bubblesort-button' onClick={() => this.bubbleSort()}>Bubble Sort</button>
+                        <button id='insertionsort-button' onClick={() => this.insertionSort()}>Insertion Sort</button>
+                        <button id='countingsort-button' onClick={() => this.countingSort()}>Counting Sort</button>
+                    </div>
                     <div className='slider-container'>
                         <input type='range' min='10' max='250' value={this.state.numBars} id='slider' className='slider' onChange={this.onSliderChange}></input>
-                        <div className='value'>{this.state.numBars}</div></div>
+                        <div className='value'>{this.state.numBars}</div>
                     </div>
-                <div className='container'>
+                </div>
+                <div className='bar-container'>
                     {array.map((value, idx) => (
-                        <div className='bar' key={idx} style={{backgroundColor: PRIMARY_COLOR, height: `${850*value/this.state.maxNum}px`, width: `${1200/this.state.numBars}px`}}></div>
+                        <div className='bar' key={idx} style={{backgroundColor: PRIMARY_COLOR, height: `${value/this.state.maxNum*90}vh`, width: `${this.state.numBars/250*100}vw`}}></div>
                     ))}
                 </div>
             </div>
