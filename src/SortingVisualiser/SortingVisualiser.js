@@ -236,7 +236,7 @@ class SortingVisualiser extends React.Component {
                         <button id='countingsort-button' onClick={() => this.countingSort()}>Counting Sort</button>
                     </div>
                     <div className='slider-container'>
-                        <input type='range' min='10' max='250' value={this.state.numBars} id='slider' className='slider' onChange={this.onSliderChange}></input>
+                        <input type='range' min='10' max='100' value={this.state.numBars} id='slider' className='slider' onChange={this.onSliderChange}></input>
                         <div className='value'>{this.state.numBars}</div>
                     </div>
                 </div>

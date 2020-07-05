@@ -1,6 +1,5 @@
 .toolbar {
     background-color: lightcoral;
-    font-size: 20px;
 }
 
 .button-container {
@@ -16,11 +15,10 @@ button {
     background: none;
     border: none;
     padding: 0 5px;
-    font: inherit;
 }
 
-.slider-container {
-    font-size: 14px;
+@media screen and (max-width: 501px) {
+    
 }
 
 .slider {
@@ -60,12 +58,9 @@ button {
 .bar-container {
     display: flex;
     justify-content: center;
-    align-items: flex-end;
-    padding: 0 20px 0 20px;
+    padding: 0 20px 10px 20px;
 }
 
 .bar {
-    display: inline-block;
     margin: 0 1px;
-    vertical-align: top;
 }
