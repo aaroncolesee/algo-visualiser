@@ -9,8 +9,8 @@ import { NavigationBar } from "./components/NavigationBar";
 export default function App() {
   return (
     <React.Fragment>
-      <NavigationBar />
       <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <NavigationBar />
         <Switch>
           <Route exact path="/" component={SortingVisualiser} />
           <Route path="/sorting" component={SortingVisualiser} />

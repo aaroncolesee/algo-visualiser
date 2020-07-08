@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Styled from "styled-components";
 
 const Styles = Styled.div`
@@ -19,12 +20,12 @@ const Styles = Styled.div`
 export const NavigationBar = () => (
   <Styles>
     <div className="navbar">
-      <a href="/algo-visualiser/sorting">
+      <Link to="/sorting">
         <button>SORTING</button>
-      </a>
-      <a href="/algo-visualiser/pathfinding">
+      </Link>
+      <Link to="/pathfinding">
         <button>PATHFINDING</button>
-      </a>
+      </Link>
     </div>
   </Styles>
 );
