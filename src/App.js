@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "./App.css";
 import SortingVisualiser from "./SortingVisualiser/SortingVisualiser";
 import "./SortingVisualiser/SortingVisualiser.css";
@@ -10,18 +10,13 @@ export default function App() {
   return (
     <React.Fragment>
       <NavigationBar />
-      <Router>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Switch>
-          <Route
-            path="/algo-visualiser/sorting"
-            component={SortingVisualiser}
-          />
-          <Route
-            path="/algo-visualiser/pathfinding"
-            component={PathfindingVisualiser}
-          />
+          <Route exact path="/" component={SortingVisualiser} />
+          <Route path="/sorting" component={SortingVisualiser} />
+          <Route path="/pathfinding" component={PathfindingVisualiser} />
         </Switch>
-      </Router>
+      </BrowserRouter>
     </React.Fragment>
   );
 }
