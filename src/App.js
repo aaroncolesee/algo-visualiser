@@ -1,14 +1,27 @@
-import React from 'react';
-import './App.css';
-import SortingVisualiser from './SortingVisualiser/SortingVisualiser';
-import './SortingVisualiser/SortingVisualiser.css';
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import "./App.css";
+import SortingVisualiser from "./SortingVisualiser/SortingVisualiser";
+import "./SortingVisualiser/SortingVisualiser.css";
+import PathfindingVisualiser from "./PathfindingVisualiser/PathfindingVisualiser";
+import { NavigationBar } from "./components/NavigationBar";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <SortingVisualiser></SortingVisualiser>
-    </div>
+    <React.Fragment>
+      <NavigationBar />
+      <Router>
+        <Switch>
+          <Route
+            path="/algo-visualiser/sorting"
+            component={SortingVisualiser}
+          />
+          <Route
+            path="/algo-visualiser/pathfinding"
+            component={PathfindingVisualiser}
+          />
+        </Switch>
+      </Router>
+    </React.Fragment>
   );
 }
-
-export default App;
