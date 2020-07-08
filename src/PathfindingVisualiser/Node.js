@@ -45,13 +45,33 @@ const Styles = Styled.div`
     }
 
     .material-icons {
+        vertical-align: middle;
+    }
+
+    .wall {
+        background-color: black !important;
     }
 `;
 
 class Node extends React.Component {
   render() {
-    const { col, row, isStart, isEnd } = this.props;
-    const name = isStart ? "node-start" : isEnd ? "node-end" : "";
+    const {
+      col,
+      row,
+      isStart,
+      isEnd,
+      isWall,
+      onMouseDown,
+      onMouseEnter,
+      onMouseUp,
+    } = this.props;
+    const name = isWall
+      ? "wall"
+      : isStart
+      ? "node-start"
+      : isEnd
+      ? "node-end"
+      : "";
     let icon;
     if (isStart) {
       icon = <i className="material-icons">stop_circle</i>;
@@ -61,7 +81,13 @@ class Node extends React.Component {
 
     return (
       <Styles>
-        <div id={`node-${col}-${row}`} className={`node ${name}`}>
+        <div
+          id={`node-${col}-${row}`}
+          className={`node ${name}`}
+          onMouseDown={() => onMouseDown()}
+          onMouseEnter={() => onMouseEnter(col, row)}
+          onMouseUp={() => onMouseUp()}
+        >
           {icon}
         </div>
       </Styles>

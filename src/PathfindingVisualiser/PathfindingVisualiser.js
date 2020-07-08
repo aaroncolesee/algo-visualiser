@@ -38,6 +38,7 @@ class PathfindingVisualiser extends React.Component {
 
     this.state = {
       grid: [],
+      isMousePressed: false,
     };
   }
 
@@ -86,6 +87,21 @@ class PathfindingVisualiser extends React.Component {
 
   prim() {}
 
+  handleMouseDown() {
+    this.setState({ isMousePressed: true });
+  }
+
+  handleMouseEnter(col, row) {
+    const { grid, isMousePressed } = this.state;
+    if (!isMousePressed) return;
+    grid[col][row].isWall = !grid[col][row].isWall;
+    this.setState({ grid });
+  }
+
+  handleMouseUp() {
+    this.setState({ isMousePressed: false });
+  }
+
   render() {
     const { grid } = this.state;
     return (
@@ -113,7 +129,7 @@ class PathfindingVisualiser extends React.Component {
             return (
               <div className="col" key={colIdx}>
                 {col.map((node, nodeIdx) => {
-                  const { isStart, isEnd } = node;
+                  const { isStart, isEnd, isWall } = node;
                   return (
                     <Node
                       key={nodeIdx}
@@ -121,7 +137,13 @@ class PathfindingVisualiser extends React.Component {
                       row={nodeIdx}
                       isStart={isStart}
                       isEnd={isEnd}
+                      isWall={isWall}
                       previousNode={null}
+                      onMouseDown={() => this.handleMouseDown()}
+                      onMouseEnter={(col, nodeIdx) =>
+                        this.handleMouseEnter(col, nodeIdx)
+                      }
+                      onMouseUp={() => this.handleMouseUp()}
                     />
                   );
                 })}
@@ -152,6 +174,7 @@ const createNode = (col, row) => {
     row,
     isStart: col === START_NODE[0] && row === START_NODE[1],
     isEnd: col === END_NODE[0] && row === END_NODE[1],
+    isWall: false,
     distance: Infinity,
     isVisited: false,
     previousNode: null,

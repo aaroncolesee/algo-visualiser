@@ -220,6 +220,7 @@ export function djikstra(grid, startNode, endNode) {
   while (unvisitedNodes.length > 0) {
     unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
     const closestNode = unvisitedNodes.shift();
+    if (closestNode.isWall) continue;
     if (closestNode.distance === Infinity) return visitedNodes; // stop condition; remaining nodes aren't reachable since the closest node has distance Infinity
     closestNode.isVisited = true;
     visitedNodes.push(closestNode);

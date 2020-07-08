@@ -224,7 +224,7 @@ class SortingVisualiser extends React.Component {
     return (
       <div>
         <div className="toolbar">
-          <div classNamee="button-container">
+          <div className="button-container">
             <button id="randomize-button" onClick={() => this.resetArray()}>
               Randomize
             </button>
