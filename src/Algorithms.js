@@ -220,7 +220,7 @@ export function djikstra(grid, startNode, endNode) {
   while (unvisitedNodes.length > 0) {
     unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
     const closestNode = unvisitedNodes.shift();
-    if (closestNode.isWall) continue;
+    if (closestNode.isWall) continue; // ignore if wall
     if (closestNode.distance === Infinity) return visitedNodes; // stop condition; remaining nodes aren't reachable since the closest node has distance Infinity
     closestNode.isVisited = true;
     visitedNodes.push(closestNode);
@@ -244,6 +244,50 @@ function updateDistances(grid, node) {
 
   for (const neighbor of unvisitedNeighbors) {
     neighbor.distance = node.distance + 1;
+    neighbor.previousNode = node;
+  }
+}
+
+export function astar(grid, startNode, endNode) {
+  startNode.distance = 0;
+  const visitedNodes = [];
+  const unvisitedNodes = [];
+  for (const col of grid) {
+    for (const node of col) {
+      unvisitedNodes.push(node);
+    }
+  }
+  while (unvisitedNodes.length > 0) {
+    unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
+    const closestNode = unvisitedNodes.shift();
+    if (closestNode.isWall) continue; // ignore if wall
+    if (closestNode.distance === Infinity) return visitedNodes; // stop condition; remaining nodes aren't reachable since the closest node has distance Infinity
+    closestNode.isVisited = true;
+    visitedNodes.push(closestNode);
+    if (closestNode === endNode) return visitedNodes;
+    updateDistancesAstar(grid, closestNode, endNode); // update distance of neighbors
+  }
+}
+
+function updateDistancesAstar(grid, node, endNode) {
+  const neighbors = [];
+
+  if (node.col > 0) neighbors.push(grid[node.col - 1][node.row]);
+  if (node.col < grid.length - 1) neighbors.push(grid[node.col + 1][node.row]);
+  if (node.row > 0) neighbors.push(grid[node.col][node.row - 1]);
+  if (node.row < grid[0].length - 1)
+    neighbors.push(grid[node.col][node.row + 1]);
+
+  const unvisitedNeighbors = neighbors.filter(
+    (neighbor) => !neighbor.isVisited
+  ); // filter out visited neighbors
+
+  for (const neighbor of unvisitedNeighbors) {
+    const heuristic =
+      Math.abs(endNode.col - neighbor.col) +
+      Math.abs(endNode.row - neighbor.row);
+
+    neighbor.distance = node.distance + 1 + heuristic; // A* is similar to Dijkstra's but adds an additional heuristic to the cost;
     neighbor.previousNode = node;
   }
 }

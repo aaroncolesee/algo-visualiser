@@ -3,19 +3,11 @@ import Styled from "styled-components";
 
 const Styles = Styled.div`
     .node {
-        height: 30px;
-        width: 30px;
+        height: 25px;
+        width: 25px;
         border: 1px solid black;
         border-bottom: none;
         border-right: none;
-    }
-
-    .node-start {
-        background-color: green;
-    }
-
-    .node-end {
-        background-color: red;
     }
 
     .node-visited {
@@ -48,8 +40,16 @@ const Styles = Styled.div`
         vertical-align: middle;
     }
 
+    .start-icon {
+      color: mediumseagreen;
+    }
+
+    .end-icon {
+      color: tomato;
+    }
+
     .wall {
-        background-color: black !important;
+        background-color: cadetblue;
     }
 `;
 
@@ -74,9 +74,9 @@ class Node extends React.Component {
       : "";
     let icon;
     if (isStart) {
-      icon = <i className="material-icons">stop_circle</i>;
+      icon = <i className="material-icons start-icon">stop_circle</i>;
     } else if (isEnd) {
-      icon = <i className="material-icons">star</i>;
+      icon = <i className="material-icons end-icon">star</i>;
     }
 
     return (
@@ -84,7 +84,7 @@ class Node extends React.Component {
         <div
           id={`node-${col}-${row}`}
           className={`node ${name}`}
-          onMouseDown={() => onMouseDown()}
+          onMouseDown={() => onMouseDown(col, row)}
           onMouseEnter={() => onMouseEnter(col, row)}
           onMouseUp={() => onMouseUp()}
         >
