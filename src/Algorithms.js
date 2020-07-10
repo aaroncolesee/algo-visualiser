@@ -217,6 +217,7 @@ export function djikstra(grid, startNode, endNode) {
       unvisitedNodes.push(node);
     }
   }
+
   while (unvisitedNodes.length > 0) {
     unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
     const closestNode = unvisitedNodes.shift();

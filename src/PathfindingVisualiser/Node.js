@@ -8,6 +8,7 @@ const Styles = Styled.div`
         border: 1px solid black;
         border-bottom: none;
         border-right: none;
+        background-color: white;
     }
 
     .node-visited {
@@ -36,6 +37,18 @@ const Styles = Styled.div`
         100% {transform: scale(1); background-color: rgb(127, 76, 255);}
     }
 
+    .wall {
+      animation: wall-animation 2s forwards;
+    }
+
+    /* light green to dark blue */
+    @keyframes wall-animation {
+        0% {transform: scale(0.3); background-color: #c9e4ca ;}
+        25% {background-color: #87bba2;}
+        50% {background-color: #55828b;}
+        75% {transform: scale(1.2); #3b6064;}
+        100% {transform: scale(1); background-color: #364958;}
+    }
     .material-icons {
         vertical-align: middle;
     }
@@ -48,9 +61,6 @@ const Styles = Styled.div`
       color: tomato;
     }
 
-    .wall {
-        background-color: cadetblue;
-    }
 `;
 
 class Node extends React.Component {

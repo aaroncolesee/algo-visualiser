@@ -2,9 +2,15 @@ import React from "react";
 import Styled from "styled-components";
 import Node from "./Node";
 import * as algorithms from "../Algorithms.js";
+import * as mazeAlgorithms from "../MazeGenerationAlgorithms.js";
 
-const ANIMATION_SPEED_MS = 15;
+const ANIMATION_SPEED_MS = 10;
 const SP_ANIMATION_SPEED_MS = 30;
+
+// [col ,row]
+const BOARD = [71, 31];
+const START_NODE = [27, 9];
+const END_NODE = [61, 25];
 
 const Styles = Styled.div`
     .toolbar {
@@ -63,13 +69,7 @@ const Styles = Styled.div`
     .end-icon {
       color: tomato;
     }
-
 `;
-
-// [col ,row]
-const BOARD = [70, 30];
-const START_NODE = [10, 10];
-const END_NODE = [60, 25];
 
 class PathfindingVisualiser extends React.Component {
   constructor(props) {
@@ -89,6 +89,31 @@ class PathfindingVisualiser extends React.Component {
     const grid = createGrid();
 
     this.setState({ grid });
+  }
+
+  clearPath() {
+    const { grid } = this.state;
+
+    for (const col of grid) {
+      for (const node of col) {
+        if (
+          node.className === "node node-visited" ||
+          node.className === "node node-visited path"
+        )
+          node.className = "node ";
+      }
+    }
+
+    this.setState({ grid });
+  }
+
+  resetIsVisited() {
+    const { grid } = this.state;
+    for (const col of grid) {
+      for (const node of col) {
+        node.isVisited = false;
+      }
+    }
   }
 
   djikstra() {
@@ -169,10 +194,43 @@ class PathfindingVisualiser extends React.Component {
     }, result.length * ANIMATION_SPEED_MS + shortestPath.length * SP_ANIMATION_SPEED_MS);
   }
 
+  depthFirstMaze() {
+    this.disableButtons();
+
+    const { grid } = this.state;
+    const result = mazeAlgorithms.getDepthFirstMaze(grid);
+
+    // set all nodes to walls
+    for (let i = 0; i < BOARD[0]; i++) {
+      for (let j = 0; j < BOARD[1]; j++) {
+        document.getElementById(`node-${i}-${j}`).className = "node wall";
+        grid[i][j].isWall = true;
+      }
+    }
+
+    // generate the paths
+    for (let i = 0; i < result.length; i++) {
+      setTimeout(() => {
+        const node = result[i];
+        document.getElementById(`node-${node.col}-${node.row}`).className =
+          "node";
+        grid[node.col][node.row].isWall = false;
+      }, i * ANIMATION_SPEED_MS);
+    }
+
+    setTimeout(() => {
+      this.resetIsVisited(); // reset isVisited because the algorithm used this
+      this.setState({ grid });
+      this.enableButtons();
+    }, result.length * ANIMATION_SPEED_MS);
+  }
+
   disableButtons() {
     document.getElementById("reset-button").disabled = true;
+    document.getElementById("clear-path-button").disabled = true;
     document.getElementById("dijkstra-button").disabled = true;
     document.getElementById("astar-button").disabled = true;
+    document.getElementById("clear-path-button").disabled = true;
   }
 
   enableButtons() {
@@ -212,11 +270,20 @@ class PathfindingVisualiser extends React.Component {
             <button id="reset-button" onClick={() => this.resetGrid()}>
               Reset
             </button>
+            <button id="clear-path-button" onClick={() => this.clearPath()}>
+              Clear Path
+            </button>
             <button id="dijkstra-button" onClick={() => this.djikstra()}>
               Dijkstra's
             </button>
             <button id="astar-button" onClick={() => this.astar()}>
               A*
+            </button>
+            <button
+              id="recursive-backtracking-button"
+              onClick={() => this.depthFirstMaze()}
+            >
+              Depth First Maze
             </button>
           </div>
           <div className="legend-container">
