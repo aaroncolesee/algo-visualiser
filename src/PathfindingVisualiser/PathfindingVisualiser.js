@@ -1,7 +1,7 @@
 import React from "react";
 import Styled from "styled-components";
 import Node from "./Node";
-import * as algorithms from "../Algorithms.js";
+import * as pathfindingAlgorithms from "../PathfindingAlgorithms.js";
 import * as mazeAlgorithms from "../MazeGenerationAlgorithms.js";
 
 const ANIMATION_SPEED_MS = 10;
@@ -87,18 +87,22 @@ class PathfindingVisualiser extends React.Component {
     this.setState({ grid });
   }
 
+  // resets the grid to a clean slate
   resetGrid() {
     const grid = createGrid();
-
-    this.setState({ grid });
 
     for (let i = 0; i < BOARD[0]; i++) {
       for (let j = 0; j < BOARD[1]; j++) {
         document.getElementById(`node-${i}-${j}`).className = "node";
       }
     }
+
+    this.resetParams();
+
+    this.setState({ grid });
   }
 
+  // clears the visited nodes
   clearPath() {
     const { grid } = this.state;
 
@@ -113,31 +117,35 @@ class PathfindingVisualiser extends React.Component {
           document.getElementById(`node-${i}-${j}`).className = "node";
         }
       }
-      this.resetIsVisited();
+      this.resetParams();
       this.setState({ grid });
     }
   }
 
-  resetIsVisited() {
+  // resets parameters of nodes - to be called after each algorithm
+  resetParams() {
     const { grid } = this.state;
     for (const col of grid) {
       for (const node of col) {
         node.isVisited = false;
+        node.distance = Infinity;
       }
     }
   }
 
+  // dijkstra's algorithm
   djikstra() {
     this.disableButtons();
 
     const { grid } = this.state;
 
-    const result = algorithms.djikstra(
+    const result = pathfindingAlgorithms.djikstra(
       grid,
       grid[START_NODE[0]][START_NODE[1]],
       grid[END_NODE[0]][END_NODE[1]]
     );
 
+    // animates visited nodes
     for (let i = 0; i < result.length; i++) {
       setTimeout(() => {
         const node = result[i];
@@ -146,11 +154,12 @@ class PathfindingVisualiser extends React.Component {
       }, i * ANIMATION_SPEED_MS);
     }
 
-    const shortestPath = algorithms.getShortestPath(
+    const shortestPath = pathfindingAlgorithms.getShortestPath(
       grid[START_NODE[0]][START_NODE[1]],
       grid[END_NODE[0]][END_NODE[1]]
     );
 
+    // animates the shortest path
     setTimeout(() => {
       for (let i = 0; i < shortestPath.length; i++) {
         setTimeout(() => {
@@ -166,17 +175,19 @@ class PathfindingVisualiser extends React.Component {
     }, result.length * ANIMATION_SPEED_MS + shortestPath.length * SP_ANIMATION_SPEED_MS);
   }
 
+  // A* algorithm
   astar() {
     this.disableButtons();
 
     const { grid } = this.state;
 
-    const result = algorithms.astar(
+    const result = pathfindingAlgorithms.astar(
       grid,
       grid[START_NODE[0]][START_NODE[1]],
       grid[END_NODE[0]][END_NODE[1]]
     );
 
+    // animates the visited nodes
     for (let i = 0; i < result.length; i++) {
       setTimeout(() => {
         const node = result[i];
@@ -185,11 +196,12 @@ class PathfindingVisualiser extends React.Component {
       }, i * ANIMATION_SPEED_MS);
     }
 
-    const shortestPath = algorithms.getShortestPath(
+    const shortestPath = pathfindingAlgorithms.getShortestPath(
       grid[START_NODE[0]][START_NODE[1]],
       grid[END_NODE[0]][END_NODE[1]]
     );
 
+    // animates the shortest path
     setTimeout(() => {
       for (let i = 0; i < shortestPath.length; i++) {
         setTimeout(() => {
@@ -205,10 +217,16 @@ class PathfindingVisualiser extends React.Component {
     }, result.length * ANIMATION_SPEED_MS + shortestPath.length * SP_ANIMATION_SPEED_MS);
   }
 
+  // generates a maze using depth first search
   depthFirstMaze() {
     this.disableButtons();
 
     const { grid } = this.state;
+
+    this.resetGrid();
+
+    this.setState({ grid });
+
     const result = mazeAlgorithms.getDepthFirstMaze(grid);
 
     // set all nodes to walls
@@ -230,7 +248,7 @@ class PathfindingVisualiser extends React.Component {
     }
 
     setTimeout(() => {
-      this.resetIsVisited(); // reset isVisited because the algorithm used this
+      this.resetParams();
       this.setState({ grid });
       this.enableButtons();
     }, result.length * ANIMATION_SPEED_MS);
