@@ -82,29 +82,40 @@ class PathfindingVisualiser extends React.Component {
   }
 
   componentDidMount() {
-    this.resetGrid();
+    const grid = createGrid();
+
+    this.setState({ grid });
   }
 
   resetGrid() {
     const grid = createGrid();
 
     this.setState({ grid });
+
+    for (let i = 0; i < BOARD[0]; i++) {
+      for (let j = 0; j < BOARD[1]; j++) {
+        document.getElementById(`node-${i}-${j}`).className = "node";
+      }
+    }
   }
 
   clearPath() {
     const { grid } = this.state;
 
-    for (const col of grid) {
-      for (const node of col) {
+    for (let i = 0; i < BOARD[0]; i++) {
+      for (let j = 0; j < BOARD[1]; j++) {
         if (
-          node.className === "node node-visited" ||
-          node.className === "node node-visited path"
-        )
-          node.className = "node ";
+          document.getElementById(`node-${i}-${j}`).className ==
+            "node node-visited" ||
+          document.getElementById(`node-${i}-${j}`).className ==
+            "node node-visited path"
+        ) {
+          document.getElementById(`node-${i}-${j}`).className = "node";
+        }
       }
+      this.resetIsVisited();
+      this.setState({ grid });
     }
-
-    this.setState({ grid });
   }
 
   resetIsVisited() {
@@ -230,13 +241,15 @@ class PathfindingVisualiser extends React.Component {
     document.getElementById("clear-path-button").disabled = true;
     document.getElementById("dijkstra-button").disabled = true;
     document.getElementById("astar-button").disabled = true;
-    document.getElementById("clear-path-button").disabled = true;
+    document.getElementById("depth-first-maze-button").disabled = true;
   }
 
   enableButtons() {
     document.getElementById("reset-button").disabled = false;
+    document.getElementById("clear-path-button").disabled = false;
     document.getElementById("dijkstra-button").disabled = false;
     document.getElementById("astar-button").disabled = false;
+    document.getElementById("depth-first-maze-button").disabled = false;
   }
 
   handleMouseDown(col, row) {
@@ -280,7 +293,7 @@ class PathfindingVisualiser extends React.Component {
               A*
             </button>
             <button
-              id="recursive-backtracking-button"
+              id="depth-first-maze-button"
               onClick={() => this.depthFirstMaze()}
             >
               Depth First Maze
@@ -317,7 +330,7 @@ class PathfindingVisualiser extends React.Component {
               <div
                 className="box"
                 style={{
-                  backgroundColor: "cadetblue",
+                  backgroundColor: "#364958",
                 }}
               />
               Wall Nodes
@@ -338,10 +351,11 @@ class PathfindingVisualiser extends React.Component {
             return (
               <div className="col" key={colIdx}>
                 {col.map((node, nodeIdx) => {
-                  const { isStart, isEnd, isWall } = node;
+                  const { className, isStart, isEnd, isWall } = node;
                   return (
                     <Node
                       key={nodeIdx}
+                      className={className}
                       col={colIdx}
                       row={nodeIdx}
                       isStart={isStart}
